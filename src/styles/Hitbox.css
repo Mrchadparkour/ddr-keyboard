@@ -1,0 +1,15 @@
+.Hitbox1 {
+  height: 50px;
+  width: 50px;
+  background-color: green;
+  z-index: 2;
+  position: absolute;
+}
+.Hitbox2 {
+  height: 50px;
+  width: 50px;
+  background-color: transparent;
+  z-index: 2;
+  border: 3px solid green;
+  position: absolute;
+ }

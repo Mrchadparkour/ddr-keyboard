@@ -1,4 +1,5 @@
 import { extendObservable, action } from 'mobx';
+import { crossTarget } from './animation';
 const arrOfKeys = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
                    'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
@@ -9,6 +10,10 @@ export class store {
       playerInput: "",
       isPlaying: false,
       score: 0,
+      left1:50,
+      top1:0,
+      left2:0,
+      top2: 50,
       togglePlaying: action(() => {
         this.isPlaying = !this.isPlaying;
         this.playGame();
@@ -43,6 +48,7 @@ export class store {
         let idx = Math.floor(Math.random() * 25);
         this.chosenKey = arrOfKeys[idx];
       }),
+      animate: action(() => crossTarget())
 
     })
   }
