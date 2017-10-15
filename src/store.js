@@ -1,29 +1,48 @@
-import React from 'react';
-import { extendObservable, computed, action, autorun } from 'mobx';
-const arrOfKeys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
-                   'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+import { extendObservable, action } from 'mobx';
+const arrOfKeys = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+                   'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
 export class store {
   constructor(){
     extendObservable(this, {
-      chosenKey: "a",
+      chosenKey: "",
+      playerInput: "",
       isPlaying: false,
+      score: 0,
       togglePlaying: action(() => {
         this.isPlaying = !this.isPlaying;
         this.playGame();
       }),
+      recieveKeyStroke: action(() => {
+        this.playerInput = "";
+        window.addEventListener('keydown', (e) => {
+          e.preventDefault();
+          this.playerInput = String.fromCharCode(e.keyCode);
+          this.scorePoint();
+        })
+      }),
       playGame: action(() => {
           if (this.isPlaying) {
             setTimeout(() => {
-              this.choseKey()
+              this.choseKey();
               this.playGame();
             }, 2000);
           }
       }),
+      scorePoint: action(() => {
+        if (this.chosenKey === this.playerInput) {
+          this.score++;
+          return true;
+        } else if (this.playerInput !== "") {
+          return false;
+        }else {
+          return true;
+        }
+      }),
       choseKey: action(() => {
         let idx = Math.floor(Math.random() * 25);
         this.chosenKey = arrOfKeys[idx];
-      })
+      }),
 
     })
   }
