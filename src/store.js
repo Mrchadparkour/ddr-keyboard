@@ -8,17 +8,10 @@ export class store {
     extendObservable(this, {
       chosenKey: "",
       playerInput: "",
-      isPlaying: false,
-      score: 0,
-      top1:0,
-      left1:0,
-      left2:0,
-      top2: 0,
+      pos1:0,
+      pos2: 0,
       togglePlaying: action(() => {
-        this.top1 = 0;
-        this.left1 = 0;
-        this.top2 = 0;
-        this.left2 = 0;
+        this.resetPos();
         this.choseKey();
         this.playGame();
       }),
@@ -30,38 +23,26 @@ export class store {
         })
       }),
       playGame: action(() => {
-          if (this.chosenKey !== this.playerInput && this.top1 < 20) {
-            this.top2 = this.top1;
-            this.left2 = this.left;
-            this.top1++;
-            this.left1++;
-            crossTarget(this.top1, this.left1, this.top2, this.left2);
+          const correct = this.chosenKey === this.playerInput;
+          if (!correct && this.pos2 < 20) {
+            this.pos1 = this.pos2;
+            this.pos2++;
+            crossTarget(this.pos1, this.pos2);
             setTimeout(() => {
               this.playGame();
             }, 100);
-          } else if (this.chosenKey === this.playerInput ) {
-              alert('Nice work!')
-              this.top1 = 0;
-              this.left1 = 0;
-              this.top2 = 0;
-              this.left2 = 0;
+          } else if (correct) {
+              alert('Nice work!');
+              this.resetPos();
           }
 
       }),
-      scorePoint: action(() => {
-        if (this.chosenKey === this.playerInput) {
-          this.score++;
-          return true;
-        } else if (this.playerInput !== "") {
-          return false;
-        }else {
-          return true;
-        }
-      }),
-      choseKey: action(() => {
-        let idx = Math.floor(Math.random() * 25);
-        this.chosenKey = arrOfKeys[idx];
-      }),
+      choseKey: action(() => this.chosenKey = arrOfKeys[Math.floor(Math.random() * 25)]),
+      resetPos: action(() => {
+        this.pos1 = 0;
+        this.pos2 = 0;
+      })
+
     })
   }
 }
