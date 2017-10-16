@@ -5,8 +5,7 @@ let left1 = 50;
 let top2 = 50;
 let left2 = 0;
 
-export const crossTarget = () => {
-
-  TweenLite.fromTo('.Hitbox1', 2, {top: 0, left: '50vw'}, {top: '90vh'});
-  TweenLite.fromTo('.Hitbox2', 2, {top: '50vh', left: 0}, {left: '90vw'});
+export const crossTarget = (t1, l1, t2, l2) => {
+  TweenLite.fromTo('.Hitbox1', .1, {top: (t2 * 5) + 'vh', left: '50vw'}, {top: (t1 * 5) + 'vh'});
+  TweenLite.fromTo('.Hitbox2', .1, {left: (l2 * 5) + 'vw', top: '50vh'}, {left: (l1 * 5) + 'vw'});
 }

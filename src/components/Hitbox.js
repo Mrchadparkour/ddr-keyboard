@@ -4,9 +4,6 @@ import '../styles/Hitbox.css';
 
 
 const Hitbox = observer(class Hitbox extends Component {
-  componentDidMount() {
-    this.props.store.animate();
-  }
   render(){
     return(
       <div>

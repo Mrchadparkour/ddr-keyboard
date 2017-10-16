@@ -10,12 +10,16 @@ export class store {
       playerInput: "",
       isPlaying: false,
       score: 0,
-      left1:50,
       top1:0,
+      left1:0,
       left2:0,
-      top2: 50,
+      top2: 0,
       togglePlaying: action(() => {
-        this.isPlaying = !this.isPlaying;
+        this.top1 = 0;
+        this.left1 = 0;
+        this.top2 = 0;
+        this.left2 = 0;
+        this.choseKey();
         this.playGame();
       }),
       recieveKeyStroke: action(() => {
@@ -23,16 +27,26 @@ export class store {
         window.addEventListener('keydown', (e) => {
           e.preventDefault();
           this.playerInput = String.fromCharCode(e.keyCode);
-          this.scorePoint();
         })
       }),
       playGame: action(() => {
-          if (this.isPlaying) {
+          if (this.chosenKey !== this.playerInput && this.top1 < 20) {
+            this.top2 = this.top1;
+            this.left2 = this.left;
+            this.top1++;
+            this.left1++;
+            crossTarget(this.top1, this.left1, this.top2, this.left2);
             setTimeout(() => {
-              this.choseKey();
               this.playGame();
-            }, 2000);
+            }, 100);
+          } else if (this.chosenKey === this.playerInput ) {
+              alert('Nice work!')
+              this.top1 = 0;
+              this.left1 = 0;
+              this.top2 = 0;
+              this.left2 = 0;
           }
+
       }),
       scorePoint: action(() => {
         if (this.chosenKey === this.playerInput) {
@@ -48,8 +62,6 @@ export class store {
         let idx = Math.floor(Math.random() * 25);
         this.chosenKey = arrOfKeys[idx];
       }),
-      animate: action(() => crossTarget())
-
     })
   }
 }
