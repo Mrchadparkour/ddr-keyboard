@@ -8,7 +8,7 @@ const App = observer(class App extends Component {
   }
 
   render() {
-    const { chosenKey, togglePlaying, playerInput } = this.props.store;
+    const { chosenKey, togglePlaying} = this.props.store;
     return (
       <div className="App">
         <Hitbox store={ this.props.store } />
@@ -16,7 +16,6 @@ const App = observer(class App extends Component {
         <button onClick={() => togglePlaying()}>
           Click to Play
         </button>
-        <p>{ `You entered ${playerInput}` }</p>
       </div>
     );
   }

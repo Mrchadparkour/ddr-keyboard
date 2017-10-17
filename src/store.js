@@ -1,5 +1,5 @@
 import { extendObservable, action } from 'mobx';
-import { crossTarget } from './animation';
+import { crossTarget, hide, confirmClick } from './animation';
 const arrOfKeys = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
                    'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
@@ -8,6 +8,7 @@ export class store {
     extendObservable(this, {
       chosenKey: "",
       playerInput: "",
+      percentWin: 0,
       pos1:0,
       pos2: 0,
       togglePlaying: action(() => {
@@ -24,19 +25,25 @@ export class store {
       }),
       playGame: action(() => {
           const correct = this.chosenKey === this.playerInput;
-          if (!correct && this.pos2 < 20) {
+          if (!correct && this.pos2 < 100) {
             this.pos1 = this.pos2;
             this.pos2++;
             crossTarget(this.pos1, this.pos2);
             setTimeout(() => {
               this.playGame();
-            }, 100);
+            }, 20);
           } else if (correct) {
-              alert('Nice work!');
+              confirmClick();
+              this.getAccuracy(this.pos2);
+              alert(this.percentWin);
               this.resetPos();
+           } else if (this.pos2 === 100){
+              alert('0% success');
+              hide();
           }
 
       }),
+      getAccuracy: action((pos) => this.percentWin = (pos === 54 || pos === 44) ? '10% success' : `${100 - ((Math.abs(49 - pos)) * 20)}% success`),
       choseKey: action(() => this.chosenKey = arrOfKeys[Math.floor(Math.random() * 25)]),
       resetPos: action(() => {
         this.pos1 = 0;
